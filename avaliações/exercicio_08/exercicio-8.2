@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+double celsiusParaFahrenheit(double c) {
+    return 9.0 * c / 5.0 + 32.0;
+}
+
+int main() {
+    double celsius;
+
+    printf("Temperatura em graus Celsius: ");
+    scanf("%lf", &celsius);
+
+    double fahrenheit = celsiusParaFahrenheit(celsius);
+    printf("Temperatura em graus Fahrenheit: %.2f\n", fahrenheit);
+
+    return 0;
+}

@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main() {
+    int num1, num2;
+
+    // Solicita os números ao usuário
+    printf("Digite o primeiro número: ");
+    scanf("%d", &num1);
+
+    printf("Digite o segundo número: ");
+    scanf("%d", &num2);
+
+    // Realiza as operações
+    int soma = num1 + num2;
+    int subtracao = num1 - num2;
+    int multiplicacao = num1 * num2;
+    float divisao = (float)num1 / num2; // Conversão para float para evitar divisão por zero
+
+    // Exibe os resultados
+    printf("Soma: %d\n", soma);
+    printf("Subtração: %d\n", subtracao);
+    printf("Multiplicação: %d\n", multiplicacao);
+
+    // Verifica se o segundo número é zero antes de exibir a divisão
+    if (num2 != 0) {
+        printf("Divisão: %.2f\n", divisao);
+    } else {
+        printf("Erro: Divisão por zero!\n");
+    }
+
+    return 0;
+}
