@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    // 1. Criar um arquivo que armazena linhas de textos
+    FILE *arquivo = fopen("meu_arquivo.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar arquivo!\n");
+        return 1;
+    }
+
+    // 2. O arquivo será alimentado por dados digitados no teclado
+    char linha[100];
+    printf("Digite as linhas de texto (digite 'sair' para terminar):\n");
+    while (1) {
+        printf("> ");
+        fgets(linha, 100, stdin);
+        if (strcmp(linha, "sair\n") == 0) {
+            break;
+        }
+        // 3. Gravar a string lida do teclado no arquivo
+        fprintf(arquivo, "%s", linha);
+    }
+
+    // 5. Fechar o arquivo
+    fclose(arquivo);
+
+    // 6. Abrir o arquivo no modo de leitura
+    arquivo = fopen("meu_arquivo.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao ler arquivo!\n");
+        return 1;
+    }
+
+    // 7. Ler cada linha do arquivo e mostra-la no vídeo
+    char caractere;
+    printf("Conteúdo do arquivo:\n");
+    while ((caractere = fgetc(arquivo)) != EOF) {
+        printf("%c", caractere);
+    }
+
+    // 8. Fechar o arquivo
+    fclose(arquivo);
+
+    return 0;
+}
