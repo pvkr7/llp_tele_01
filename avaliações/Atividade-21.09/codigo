@@ -1,0 +1,161 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_PRODUTOS 100
+
+typedef struct {
+    int codigo;
+    char descricao[50];
+    double valor_unitario;
+    int qtd_estoque;
+} Produto;
+
+Produto produtos[MAX_PRODUTOS];
+int num_produtos = 0;
+
+void exibir_menu() {
+    printf("----------------------------------------------------------------------\n");
+    printf("Sistema de Controle de Estoque\n");
+    printf("----------------------------------------------------------------------\n");
+    printf("1) Cadastrar Produto\n");
+    printf("2) Consultar Produto para Alteração\n");
+    printf("3) Listar Todos os Produtos\n");
+    printf("4) Excluir Produto\n");
+    printf("5) Sair\n");
+    printf("Opção: ");
+}
+
+void cadastrar_produto() {
+    if (num_produtos >= MAX_PRODUTOS) {
+        printf("Capacidade máxima de produtos atingida!\n");
+        return;
+    }
+
+    Produto p;
+    printf("Código: ");
+    scanf("%d", &p.codigo);
+    printf("Descrição: ");
+    getchar(); // Limpa o buffer do teclado
+    fgets(p.descricao, sizeof(p.descricao), stdin);
+    p.descricao[strcspn(p.descricao, "\n")] = 0; // Remove nova linha
+    printf("Valor Unitário: ");
+    scanf("%lf", &p.valor_unitario);
+    printf("Quantidade em Estoque: ");
+    scanf("%d", &p.qtd_estoque);
+
+    produtos[num_produtos] = p;
+    num_produtos++;
+    printf("Produto cadastrado com sucesso!\n");
+}
+
+void consultar_produto() {
+    int codigo;
+    printf("Digite o código do produto para alteração: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < num_produtos; i++) {
+        if (produtos[i].codigo == codigo) {
+            printf("Produto encontrado!\n");
+            printf("Código: %d\n", produtos[i].codigo);
+            printf("Descrição: %s\n", produtos[i].descricao);
+            printf("Valor Unitário: %.2f\n", produtos[i].valor_unitario);
+            printf("Quantidade em Estoque: %d\n", produtos[i].qtd_estoque);
+
+            printf("Digite nova descrição: ");
+            getchar(); // Limpa o buffer do teclado
+            fgets(produtos[i].descricao, sizeof(produtos[i].descricao), stdin);
+            produtos[i].descricao[strcspn(produtos[i].descricao, "\n")] = 0; // Remove nova linha
+            printf("Digite novo valor unitário: ");
+            scanf("%lf", &produtos[i].valor_unitario);
+            printf("Digite nova quantidade em estoque: ");
+            scanf("%d", &produtos[i].qtd_estoque);
+
+            printf("Produto alterado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Produto não encontrado!\n");
+}
+
+void listar_produtos() {
+    if (num_produtos == 0) {
+        printf("Nenhum produto cadastrado!\n");
+        return;
+    }
+
+    printf("----------------------------------------------------------------------\n");
+    printf("Lista de Produtos\n");
+    printf("----------------------------------------------------------------------\n");
+    for (int i = 0; i < num_produtos; i++) {
+        double valor_estoque = produtos[i].valor_unitario * produtos[i].qtd_estoque;
+        printf("Código: %d\n", produtos[i].codigo);
+        printf("Descrição: %s\n", produtos[i].descricao);
+        printf("Valor Unitário: %.2f\n", produtos[i].valor_unitario);
+        printf("Quantidade em Estoque: %d\n", produtos[i].qtd_estoque);
+        printf("Valor do Estoque: %.2f\n", valor_estoque);
+        printf("----------------------------------------------------------------------\n");
+    }
+}
+
+void excluir_produto() {
+    int codigo;
+    printf("Digite o código do produto a ser excluído: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < num_produtos; i++) {
+        if (produtos[i].codigo == codigo) {
+            printf("Produto encontrado:\n");
+            printf("Código: %d\n", produtos[i].codigo);
+            printf("Descrição: %s\n", produtos[i].descricao);
+            printf("Valor Unitário: %.2f\n", produtos[i].valor_unitario);
+            printf("Quantidade em Estoque: %d\n", produtos[i].qtd_estoque);
+
+            char confirmacao;
+            printf("Deseja realmente excluir este produto? (s/n): ");
+            getchar(); // Limpa o buffer do teclado
+            scanf("%c", &confirmacao);
+
+            if (confirmacao == 's' || confirmacao == 'S') {
+                for (int j = i; j < num_produtos - 1; j++) {
+                    produtos[j] = produtos[j + 1]; // Desloca os produtos
+                }
+                num_produtos--;
+                printf("Produto excluído com sucesso!\n");
+            } else {
+                printf("Exclusão cancelada.\n");
+            }
+            return;
+        }
+    }
+    printf("Produto não encontrado!\n");
+}
+
+int main() {
+    int opcao;
+    do {
+        exibir_menu();
+        scanf("%d", &opcao);
+        switch (opcao) {
+            case 1:
+                cadastrar_produto();
+                break;
+            case 2:
+                consultar_produto();
+                break;
+            case 3:
+                listar_produtos();
+                break;
+            case 4:
+                excluir_produto();
+                break;
+            case 5:
+                printf("Saindo do sistema...\n");
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+        }
+    } while (opcao != 5);
+
+    return 0;
+}
